@@ -9,7 +9,7 @@
   {% else %}
     <p>尚未设置待结月。<a class="btn" href="{{ url_for('main.setup') }}">设置首个待结月</a></p>
   {% endif %}
-  <p class="muted">赔款当前共 {{ stat.n }} 笔，合计 {{ '{:,}'.format(stat.s) }} 分。</p>
+  <p class="muted">当前共 {{ stat.n }} 笔付款，合计 {{ '{:,}'.format(stat.s) }} 分。</p>
 </section>
 
 <section class="card">
@@ -39,7 +39,7 @@
   <h2>最近导入批次</h2>
   {% if batches %}
   <table>
-    <thead><tr><th>批次</th><th>计入期间</th><th>笔数</th><th>金额合计(分)</th><th>覆盖重报</th><th>导入时间(UTC)</th></tr></thead>
+    <thead><tr><th>批次</th><th>计入期间</th><th>笔数</th><th>金额合计(分)</th><th>覆盖重报</th><th>承接旧笔</th><th>导入时间(UTC)</th></tr></thead>
     <tbody>
     {% for b in batches %}
       <tr>
@@ -48,6 +48,7 @@
         <td class="num">{{ b.row_count }}</td>
         <td class="num">{{ '{:,}'.format(b.total_cents) }}</td>
         <td class="num">{{ b.overwritten }}</td>
+        <td class="num">{{ b.assumed_count }}</td>
         <td>{{ b.created_at }}</td>
       </tr>
     {% endfor %}

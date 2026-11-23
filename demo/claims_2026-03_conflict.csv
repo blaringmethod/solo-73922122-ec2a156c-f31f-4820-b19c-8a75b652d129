@@ -1,0 +1,3 @@
+claim_no,accident_month,payment_month,amount_cents,payment_ref,assume_legacy
+C-0004,2025-11,2025-11,1000,PAY-9001,1
+C-0004,2025-11,2025-11,2000,,

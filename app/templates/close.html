@@ -4,7 +4,7 @@
   <h2>封账</h2>
   <p>当前待结月：<strong>{{ pending }}</strong>。只能封当前待结月，成功后自动进入次月。</p>
   <h3>本期归档预览（仅为净变动组合）</h3>
-  <p>本期批次 {{ preview.batch_count }} 个，涉及赔案 {{ preview.claim_count }} 笔，
+  <p>本期批次 {{ preview.batch_count }} 个，涉及付款 {{ preview.payment_count }} 笔，
      净变动组合 {{ preview.combos|length }} 个。</p>
   {% if preview.combos %}
   <table>

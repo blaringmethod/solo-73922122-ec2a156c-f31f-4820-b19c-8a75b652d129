@@ -18,7 +18,7 @@ def index():
     batches = conn.execute(
         "SELECT * FROM batches ORDER BY id DESC LIMIT 10").fetchall()
     stat = conn.execute(
-        "SELECT COUNT(*) AS n, COALESCE(SUM(amount_cents), 0) AS s FROM claims"
+        "SELECT COUNT(*) AS n, COALESCE(SUM(amount_cents), 0) AS s FROM payments"
     ).fetchone()
     return render_template("index.html", pending=pending, closes=closes,
                            batches=batches, stat=stat)
@@ -71,7 +71,8 @@ def import_csv():
             return render_template("import.html", pending=logic.get_pending(conn),
                                    errors=exc.errors, result=None), 409
         flash(f"批次 #{result['batch_id']} 导入成功：{result['row_count']} 笔，"
-              f"计入 {result['period_month']} 期（其中覆盖重报 {result['overwritten']} 笔）", "ok")
+              f"计入 {result['period_month']} 期（覆盖重报 {result['overwritten']} 笔"
+              f"，承接旧笔 {result['assumed_count']} 笔）", "ok")
         return render_template("import.html", pending=logic.get_pending(conn),
                                errors=None, result=result)
     return render_template("import.html", pending=pending, errors=None, result=None)
@@ -96,7 +97,7 @@ def close():
             flash(str(exc), "error")
             return redirect(url_for("main.close"))
         flash(f"已封账 {result['closed']}：本期 {result['batch_count']} 批、"
-              f"{result['claim_count']} 笔变动，归档 {result['combo_count']} 个组合；"
+              f"{result['payment_count']} 笔付款变动，归档 {result['combo_count']} 个组合；"
               f"待结月推进至 {result['next']}", "ok")
         return redirect(url_for("main.index"))
     preview = logic.close_preview(conn, pending)
